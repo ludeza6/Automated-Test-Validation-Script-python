@@ -1,14 +1,25 @@
-import unittest
-from test_validator import Measurement
+import csv
+from test_validator_with_logging import Measurement
 
-class TestMeasurementValidation(unittest.TestCase):
-    def test_pass_condition(self):
-        m = Measurement("Test", 5.0, 4.0, 6.0, "V")
-        self.assertTrue(m.passed)
+def run_test_suite(csv_file):
+    measurements = []
 
-    def test_fail_condition(self):
-        m = Measurement("Test", 3.0, 4.0, 6.0, "V")
-        self.assertFalse(m.passed)
+    with open(csv_file, newline="") as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            measurement = Measurement(
+                name=row["name"],
+                value=float(row["value"]),
+                min_limit=float(row["min_limit"]),
+                max_limit=float(row["max_limit"]),
+                unit=row["unit"]
+            )
+            measurements.append(measurement)
 
-if __name__ == '__main__':
-    unittest.main()
+    passed = sum(1 for m in measurements if m.passed)
+    failed = len(measurements) - passed
+
+    print(f"Test Summary: {passed} PASSED, {failed} FAILED")
+
+if __name__ == "__main__":
+    run_test_suite("measurements.csv")

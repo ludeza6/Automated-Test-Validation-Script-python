@@ -1,4 +1,5 @@
-test_name,measured_value,expected_min,expected_max,unit
-Output Voltage,5.05,4.8,5.2,V
-Signal Frequency,980,990,1010,Hz
-Current Draw,85,0,100,mA
+voltage,current
+5.0,1.8
+4.9,2.1
+5.6,1.9
+5.1,1.5

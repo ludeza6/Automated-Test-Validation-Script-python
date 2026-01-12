@@ -1,28 +1,24 @@
-import csv
 import logging
 
-# Configure logging
+# Configure logging to file
 logging.basicConfig(
     filename="test_report.log",
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
-def validate_measurements(csv_file):
-    with open(csv_file, newline="") as file:
-        reader = csv.DictReader(file)
-        for row in reader:
-            voltage = float(row["voltage"])
-            current = float(row["current"])
+class Measurement:
+    def __init__(self, name, value, min_limit, max_limit, unit):
+        self.name = name
+        self.value = value
+        self.min_limit = min_limit
+        self.max_limit = max_limit
+        self.unit = unit
 
-            if 4.5 <= voltage <= 5.5 and current <= 2.0:
-                status = "PASS"
-            else:
-                status = "FAIL"
+        self.passed = self.min_limit <= self.value <= self.max_limit
 
-            message = f"Voltage={voltage}V, Current={current}A -> {status}"
-            print(message)
-            logging.info(message)
-
-if __name__ == "__main__":
-    validate_measurements("measurements.csv")
+        status = "PASS" if self.passed else "FAIL"
+        logging.info(
+            f"{self.name}: {self.value}{self.unit} "
+            f"(Limits: {self.min_limit}-{self.max_limit}{self.unit}) -> {status}"
+        )

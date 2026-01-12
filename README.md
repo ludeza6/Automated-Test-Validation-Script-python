@@ -1,41 +1,51 @@
 # Hardware Test Automation & Validation Utility
 
-## Overview
-This project is an automated data validation tool designed for hardware engineering and manufacturing environments. It processes raw sensor or test equipment data (via CSV) and performs automated pass/fail analysis against predefined engineering specifications.
+A Python-based utility designed to automate the validation of system measurements against predefined thresholds. The suite reads test data from a CSV, evaluates pass/fail criteria, and generates a timestamped execution log.
 
-By automating the validation process, this tool reduces human error in data interpretation and provides immediate feedback on hardware performance margins.
+Features
 
-## Key Features
-* **Object-Oriented Design**: Built using modular classes (`Measurement`, `Validator`, `ReportGenerator`) for easy scalability.
-* **Automated Validation**: Compares measured values against `min` and `max` tolerances to determine status.
-* **Margin Analysis**: Calculates the "Engineering Margin"—quantifying how close a test was to the failure threshold.
-* **Professional Reporting**: Generates clean, scannable console reports and professional HTML summaries for stakeholders.
-* **Robust Error Handling**: Includes logging and validation to handle malformed data or missing files.
-* **Unit Tested**: Features a comprehensive test suite to ensure validation logic accuracy before deployment.
+Automated Validation: Compares numerical measurements against minimum and maximum bounds.
 
-## Installation & Setup
-1. **Clone the repository**:
-   ```bash
-   git clone [https://github.com/your-username/hardware-validation-tool.git](https://github.com/your-username/hardware-validation-tool.git)
-   cd hardware-validation-tool
-   
+
+
+Persistent Logging: Generates detailed execution reports including timestamps, measured values, and status.
+
+
+Data-Driven Design: Uses CSV input files for easy test case management.
+
+File Structure
+test_suite.py: The main entry point that orchestrates the data loading and testing process.
+
+test_validator_with_logging.py: Contains the core logic for measurement evaluation and logging configuration.
+
+
+measurements.csv: The input data file containing test parameters (names, values, limits, and units).
+
+
+test_report.log: The output file generated after running tests, documenting every result.
+
 Usage
-The tool accepts a CSV file containing test data. The CSV must follow this header format: test_name,measured_value,expected_min,expected_max,unit
 
-Running the Validator
-Run the script from your terminal:
+Prepare your data: Edit measurements.csv to include the values you wish to test.
 
-Bash
-
-python test_validator.py measurements.csv --html
-Running Unit Tests
-To verify the integrity of the validation logic:
+Run the suite: Execute the main script via terminal:
 
 Bash
 
 python test_suite.py
-📋 Data Format Example
-The input CSV (measurements.csv) should look like this: | test_name | measured_value | expected_min | expected_max | unit | | :--- | :--- | :--- | :--- | :--- | | Output Voltage | 5.05 | 4.8 | 5.2 | V | | Signal Frequency | 980 | 990 | 1010 | Hz | | Current Draw | 85 | 0 | 100 | mA |
+Check results:
 
-Why I Built This
-This project demonstrates the intersection of Software Engineering and Hardware Reliability. It addresses the common industry need to transform raw manufacturing data into actionable insights, showing proficiency in Python, data processing, and quality assurance workflows.
+Review the console output for a high-level summary (e.g., Test Summary: 3 PASSED, 1 FAILED).
+
+Open test_report.log for a detailed breakdown of each measurement.
+
+Example Log Output
+The system generates logs in the following format:
+
+Plaintext
+
+2026-01-12 12:41:22,812 - INFO - Voltage Rail 1: 5.1V (Limits: 4.8-5.2V) -> PASS
+2026-01-12 12:41:22,812 - INFO - Voltage Rail 2: 4.5V (Limits: 4.8-5.2V) -> FAIL
+2026-01-12 12:41:22,812 - INFO - Current Draw: 1.9A (Limits: 1.5-2.2A) -> PASS
+2026-01-12 12:41:22,812 - INFO - Clock Frequency: 99.8MHz (Limits: 98.0-102.0MHz) -> PASS
+Would you like me to add a section on how to extend the Measurement class to support more complex validation logic?
